@@ -69,16 +69,31 @@
   </div>
 
   <script>
-    function generateLink() {
-      const wish = encodeURIComponent(document.getElementById('wish').value);
-      const longtext = encodeURIComponent(document.getElementById('longtext').value);
-      const song = encodeURIComponent(document.getElementById('song').value);
+  function generateLink() {
+    const base = "https://alepppo1.github.io/birthday-card-generator/display.html";
+    const wish = encodeURIComponent(document.getElementById('wish').value || "");
+    const longtext = encodeURIComponent(document.getElementById('longtext').value || "");
+    const song = encodeURIComponent(document.getElementById('song').value || "");
+    const fullUrl = `${base}?wish=${wish}&longtext=${longtext}&song=${song}`;
 
-      const link = `${window.location.origin}/display.html?wish=${wish}&longtext=${longtext}&song=${song}`;
-      document.getElementById('generated-link').innerHTML = 
-        `Your link: <a href="${link}" target="_blank">${link}</a>`;
-    }
-  </script>
+    // Try auto-shortening using TinyURL (simple public API)
+    // NOTE: some browsers might block this due to CORS. If it fails, fallback below.
+    fetch('https://tinyurl.com/api-create?url=' + encodeURIComponent(fullUrl))
+      .then(res => res.text())
+      .then(shortUrl => {
+        document.getElementById('generated-link').innerHTML =
+          `Short link: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+      })
+      .catch(err => {
+        // Fallback: show full link so you can manually paste into tinyurl.com
+        document.getElementById('generated-link').innerHTML =
+          `Could not auto-short. Full link: <a href="${fullUrl}" target="_blank">${fullUrl}</a>
+           <br>Or shorten it manually at <a href="https://tinyurl.com" target="_blank">tinyurl.com</a>`;
+      });
+  }
+</script>
+
 
 </body>
 </html>
+
