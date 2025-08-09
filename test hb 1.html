@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Card Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+      flex-direction: column;
+    }
+    .form-container {
+      text-align: center;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Create Your Personalized Birthday Card</h1>
+    <label for="wish">Your Wish (e.g., Happy Birthday!):</label>
+    <input type="text" id="wish" placeholder="Enter your birthday wish">
+
+    <label for="longtext">Your Long Message:</label>
+    <textarea id="longtext" rows="6" placeholder="Write your long message here"></textarea>
+
+    <label for="song">Song URL (Example: "song.mp3"):</label>
+    <input type="text" id="song" placeholder="Enter a music file link (e.g., song.mp3)">
+
+    <button onclick="generateLink()">Generate Link</button>
+
+    <p id="generated-link"></p>
+  </div>
+
+  <script>
+    function generateLink() {
+      const wish = encodeURIComponent(document.getElementById('wish').value);
+      const longtext = encodeURIComponent(document.getElementById('longtext').value);
+      const song = encodeURIComponent(document.getElementById('song').value);
+      const link = `${window.location.origin}/display.html?wish=${wish}&longtext=${longtext}&song=${song}`;
+      
+      document.getElementById('generated-link').innerHTML = `Your link: <a href="${link}" target="_blank">${link}</a>`;
+    }
+  </script>
+
+</body>
+</html>
