@@ -1,99 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Birthday Card</title>
-  <style>
+<meta charset="UTF-8">
+<title>Text to Link Generator</title>
+<style>
     body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f9;
-      flex-direction: column;
-      padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
-    .form-container {
-      text-align: center;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        width: 350px;
     }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+    input, textarea, button {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
     button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+        background-color: #218838;
     }
-    #generated-link {
-      margin-top: 15px;
+    .link-output {
+        margin-top: 10px;
+        word-break: break-word;
     }
-  </style>
+</style>
 </head>
 <body>
 
-  <div class="form-container">
-    <h1>Create Your Birthday Card</h1>
-
-    <label for="wish">Event Name (e.g., Happy Birthday):</label>
-    <input type="text" id="wish" placeholder="Enter event name">
-
-    <label for="longtext">Long Message:</label>
-    <textarea id="longtext" rows="6" placeholder="Write your long message here"></textarea>
-
-    <label for="song">YouTube Song Link:</label>
-    <input type="text" id="song" placeholder="Enter YouTube link">
-
+<div class="container">
+    <h2>Generate Link with Hidden Text</h2>
+    <textarea id="longText" placeholder="Enter your long text here"></textarea>
     <button onclick="generateLink()">Generate Link</button>
+    <div class="link-output" id="generatedLink"></div>
+</div>
 
-    <p id="generated-link"></p>
-  </div>
-
-  <script>
-  function generateLink() {
-    const base = "https://alepppo1.github.io/birthday-card-generator/display.html";
-    const wish = encodeURIComponent(document.getElementById('wish').value || "");
-    const longtext = encodeURIComponent(document.getElementById('longtext').value || "");
-    const song = encodeURIComponent(document.getElementById('song').value || "");
-    const fullUrl = `${base}?wish=${wish}&longtext=${longtext}&song=${song}`;
-
-    // Try auto-shortening using TinyURL (simple public API)
-    // NOTE: some browsers might block this due to CORS. If it fails, fallback below.
-    fetch('https://tinyurl.com/api-create?url=' + encodeURIComponent(fullUrl))
-      .then(res => res.text())
-      .then(shortUrl => {
-        document.getElementById('generated-link').innerHTML =
-          `Short link: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
-      })
-      .catch(err => {
-        // Fallback: show full link so you can manually paste into tinyurl.com
-        document.getElementById('generated-link').innerHTML =
-          `Could not auto-short. Full link: <a href="${fullUrl}" target="_blank">${fullUrl}</a>
-           <br>Or shorten it manually at <a href="https://tinyurl.com" target="_blank">tinyurl.com</a>`;
-      });
-  }
+<script>
+function generateLink() {
+    const text = document.getElementById('longText').value.trim();
+    if (text === '') {
+        alert('Please enter some text!');
+        return;
+    }
+    const encodedText = encodeURIComponent(text);
+    const link = `display.html?data=${encodedText}`;
+    document.getElementById('generatedLink').innerHTML = `<a href="${link}" target="_blank">${window.location.origin}/${link}</a>`;
+}
 </script>
-
 
 </body>
 </html>
-
